@@ -1,0 +1,33 @@
+@model BoxNews.Models.CategoryViewModel.UpdateCategoryViewModel;
+@{
+    ViewData["Title"] = "UpdateCategory";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="col-md-12">
+    <div class="tile">
+        <div class="tile-body">
+            <div class="row element-button">
+                <h2>Sửa thông tin danh mục</h2>
+            </div>
+            <form method="post" asp-area="Admin" asp-controller="Category" asp-action="Update">
+                <div class="mb-3">
+                    <label for="" class="form-label">Mã danh mục</label>
+                    <input type="text" class="form-control" asp-for="CategoryID" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Tên danh mục</label>
+                    <input type="text" class="form-control" asp-for="CategoryName"> 
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Mô tả</label>
+                    <textarea class="form-control" id="description" rows="3" asp-for="Description"></textarea> 
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+

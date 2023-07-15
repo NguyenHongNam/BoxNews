@@ -1,0 +1,67 @@
+@model BoxNews.Models.PostViewModel.UpdatePostViewModel;
+@{
+    ViewData["Title"] = "NewPost";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="col-md-12">
+    <div class="tile">
+        <div class="tile-body">
+            <div class="row element-button">
+                <h2>Thêm mới tin tức</h2>
+            </div>
+            <form method="post" asp-area="Admin" asp-controller="Post" asp-action="Update" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="" class="form-label">Mã tin tức</label>
+                    <input type="text" class="form-control" asp-for="PostID" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Tiêu đề</label>
+                    <input type="text" class="form-control" asp-for="Title"> 
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Tác giả</label>
+                    <input type="text" class="form-control" asp-for="Author">
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Danh mục</label>
+                    <select asp-for="CategoryID" class="form-control">
+                        <option value="">-- Chọn danh mục --</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.CategoryID">@category.CategoryName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Ảnh</label>
+                    <input type="file" name="image" id="image" class="form-control-file" asp-for="ImgSrc"/> <br>
+                    <img src="~/images/@Model.ImgSrc" style="width: 60px; height="60px";" />
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Nội dung</label>
+                    <textarea id="content" name="content" asp-for="Content" rows="3" ckeditor></textarea>
+                </div>
+                 <div class="mb-3">
+                    <label for="" class="form-label">Trạng thái</label>
+                    <input type="checkbox" class="success" asp-for="Status">
+                    <span class="slider"></span>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#content'))
+        .then(editor => {
+        console.log(editor);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+</script>
+
+
+

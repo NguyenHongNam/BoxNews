@@ -1,0 +1,49 @@
+@model List<BoxNews.Models.Domain.Category>
+@{
+    ViewData["Title"] = "Category";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="tile">  
+        <div class="tile-body">
+            <div class="row element-button">
+                <div class="col-sm-2">
+                    <a class="btn btn-add btn-sm" asp-area="Admin" asp-controller="Category" asp-action="Add" title="Thêm">
+                        <i class="fas fa-plus"></i>
+                        Tạo mới danh mục
+                    </a>
+                </div>
+            </div>
+            <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                    <tr>
+                        <th>Mã danh mục</th>
+                        <th>Tên danh mục</th>
+                        <th>Mô tả</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var category in Model)
+                    {
+                        <tr>
+                            <td>@category.CategoryID</td>
+                            <td>@category.CategoryName</td>
+                            <td>@category.Description</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm edit" asp-area="Admin" asp-controller="Category" asp-action="Update" asp-route-id="@category.CategoryID" title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-primary btn-sm trash" asp-area="Admin" asp-controller="Category" asp-action="Delete" asp-route-id="@category.CategoryID" title="Xóa">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

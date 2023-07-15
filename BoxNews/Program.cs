@@ -1,7 +1,11 @@
+using BoxNews.Data;
+using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<BoxNewDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BoxNewsConnectionString")));
 
 var app = builder.Build();
 
