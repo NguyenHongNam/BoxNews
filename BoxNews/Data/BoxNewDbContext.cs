@@ -10,4 +10,6 @@ public class BoxNewDbContext : DbContext
     }
     public DbSet<Category> Categories {get; set;}
     public DbSet<Post> Posts {get; set;}
+    public DbSet<Account> Accounts { get; set;}
+    public DbSet<Role> Roles { get; set;}
 }
