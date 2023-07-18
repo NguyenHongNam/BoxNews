@@ -27,43 +27,48 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+           
             var categories = _context.Categories.ToList();
             var viewModel = new AddPostViewModel
             {
                 Categories = categories
             };
-
             return View(viewModel);
+            
         }
         [Area("Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(AddPostViewModel addPostViewModel, IFormFile image)
         {
-            if (image != null && image.Length > 0)
+            if(ModelState.IsValid)
             {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                if (image != null && image.Length > 0)
                 {
-                    await image.CopyToAsync(stream);
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+                    addPostViewModel.ImgSrc = fileName;
                 }
-                addPostViewModel.ImgSrc = fileName;
+                var post = new Post()
+                {
+                    Title = addPostViewModel.Title,
+                    CreatedAt = DateTime.Now,
+                    Author = addPostViewModel.Author,
+                    CategoryID = addPostViewModel.CategoryID,
+                    AccountID = addPostViewModel.AccountID,
+                    Content = addPostViewModel.Content,
+                    ImgSrc = addPostViewModel.ImgSrc,
+                    Status = addPostViewModel.Status
+                };
+                addPostViewModel.Categories = _context.Categories.ToList();
+                await _context.Posts.AddAsync(post);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            var post = new Post()
-            {
-                Title = addPostViewModel.Title,
-                CreatedAt = DateTime.Now,
-                Author = addPostViewModel.Author,
-                CategoryID = addPostViewModel.CategoryID,
-                AccountID = addPostViewModel.AccountID,
-                Content = addPostViewModel.Content,
-                ImgSrc = addPostViewModel.ImgSrc,
-                Status = addPostViewModel.Status
-            };
-            addPostViewModel.Categories = _context.Categories.ToList();
-            await _context.Posts.AddAsync(post);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return View(addPostViewModel);
         }
         [Area("Admin")]
         [HttpGet]
@@ -100,8 +105,9 @@ namespace BoxNews.Areas.Admin.Controllers
             {
                 post.Title = model.Title;
                 post.Author = model.Author;
-                // post.CategoryID = model.CategoryID;
+                // post.CategoryID = model.CategoryID;  
                 post.Content = model.Content;
+                post.CreatedAt = DateTime.Now;
                 // Kiểm tra xem người dùng đã chọn ảnh mới hay chưa
                 // if (image != null)
                 // {

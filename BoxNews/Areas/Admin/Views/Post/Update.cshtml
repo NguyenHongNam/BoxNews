@@ -17,6 +17,7 @@
                 <div class="mb-3">
                     <label for="" class="form-label">Tiêu đề</label>
                     <input type="text" class="form-control" asp-for="Title"> 
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Tác giả</label>
@@ -31,15 +32,18 @@
                             <option value="@category.CategoryID">@category.CategoryName</option>
                         }
                     </select>
+                    <span asp-validation-for="CategoryID" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Ảnh</label>
                     <input type="file" name="image" id="image" class="form-control-file" asp-for="ImgSrc"/> <br>
                     <img src="~/images/@Model.ImgSrc" style="width: 60px; height="60px";" />
+                    <span asp-validation-for="ImgSrc" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Nội dung</label>
                     <textarea id="content" name="content" asp-for="Content" rows="3" ckeditor></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
                 </div>
                  <div class="mb-3">
                     <label for="" class="form-label">Trạng thái</label>
