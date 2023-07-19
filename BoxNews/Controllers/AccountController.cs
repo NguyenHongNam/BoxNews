@@ -78,7 +78,9 @@ namespace BoxNews.Controllers
 
                     };
                     HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                        CookieAuthenticationDefaults.AuthenticationScheme, 
+                        new ClaimsPrincipal(claimsIdentity), 
+                        authProperties);
                     return RedirectToAction("Index", "Home");   
                 }
                 ModelState.AddModelError("", "Invalid username or password!");

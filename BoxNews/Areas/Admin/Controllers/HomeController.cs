@@ -5,7 +5,7 @@ namespace BoxNews.Areas.Admin.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize("Administrator")]
+        [Authorize(Roles ="Administrator")]
         [Area("Admin")]
         public IActionResult Index()
         {
