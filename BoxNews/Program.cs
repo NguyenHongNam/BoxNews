@@ -1,4 +1,7 @@
 using BoxNews.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BoxNewDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BoxNewsConnectionString")));
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.AccessDeniedPath = "/Forbidden/";
+    });
 
 var app = builder.Build();
 
@@ -23,23 +34,10 @@ app.MapControllerRoute(
   pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
 );
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "login",
-        pattern: "login",
-        defaults: new { controller = "Account", action = "Login" });
-
-    endpoints.MapControllerRoute(
-        name: "register",
-        pattern: "register",
-        defaults: new { controller = "Account", action = "Register" });
-});
 app.Run();

@@ -11,10 +11,14 @@ namespace BoxNews.Models.Domain
         public int AccountID { get; set; }
         public string UserName { get; set; }
 
-        public int UserPassword { get; set; }
+        public string UserPassword { get; set; }
         public string Email { get; set; }
         public string FullName { get; set; }
-        public string RoleID { get; set; }
-        public int LastLogin { get; set; }
+        public string RoleName { get; set; }
+
+        [ForeignKey("Role")]
+        public int RoleID { get; set; }
+
+        public DateTime LastLogin { get; set; }
     }
 }

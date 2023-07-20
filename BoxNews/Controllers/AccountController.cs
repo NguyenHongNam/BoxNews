@@ -39,9 +39,11 @@ namespace BoxNews.Controllers
                 var account = new Account
                 {
                     UserName = model.UserName,
-                    UserPassword = model.Password.GetHashCode(),
+                    UserPassword = model.Password,
                     Email = model.Email,
                     FullName = model.FullName,
+                    RoleName = "User",
+                    RoleID = 1
                 };
                 _context.Accounts.Add(account);
                 await _context.SaveChangesAsync();
@@ -62,16 +64,23 @@ namespace BoxNews.Controllers
             if (ModelState.IsValid)
             {
                 var hashedPassword = model.Password.GetHashCode();
-                var account  = await _context.Accounts.FirstOrDefaultAsync(a => a.UserName == model.UserName && a.UserPassword == hashedPassword);  
+                var account  = await _context.Accounts.FirstOrDefaultAsync(a => a.UserName == model.UserName && a.UserPassword == model.Password);  
                 if(account != null)
                 {
                     var claims = new[]
                     {
                         new Claim(ClaimTypes.Name,account.UserName),
-                        new Claim(ClaimTypes.Role,account.RoleID)
+                        new Claim(ClaimTypes.Role,account.RoleName)
                     };
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                    var claimsIdentity = new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+
+                    };
+                    HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme, 
+                        new ClaimsPrincipal(claimsIdentity), 
+                        authProperties);
                     return RedirectToAction("Index", "Home");   
                 }
                 ModelState.AddModelError("", "Invalid username or password!");

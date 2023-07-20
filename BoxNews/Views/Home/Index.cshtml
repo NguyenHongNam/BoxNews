@@ -11,8 +11,16 @@
                 <li class="active"><a href="index.html"><span class="fa fa-home desktop-home"></span><span class="mobile-show">Home</span></a></li>
                 <li><a href="#">Tin trong nước</a></li>
                 <li><a href="#">Tin quốc tế</a></li>
-                <li><a href="@Url.Action("Login", "Account")">Đăng nhập</a></li>
-                <li><a href="@Url.Action("Register", "Account")">Đăng ký</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a href="@Url.Action("Login", "Account")">Đăng xuất</a></li>
+                }
+                else
+                {
+                    <li><a href="@Url.Action("Login", "Account")">Đăng nhập</a></li>
+                    <li><a href="@Url.Action("Register", "Account")">Đăng ký</a></li>
+                }
+                <li><a href="admin">Admin</a></li>
             </ul>
         </div>
     </nav>
