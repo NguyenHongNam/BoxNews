@@ -30,16 +30,21 @@ namespace BoxNews.Areas.Admin.Controllers
         }
         [Area("Admin")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(AddCategoryViewModel addCategoryViewModel)
         {
-            var category = new Category()
+            if(ModelState.IsValid)
             {
-                CategoryName = addCategoryViewModel.CategoryName,
-                Description = addCategoryViewModel.Description
-            };
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+                var category = new Category()
+                {
+                    CategoryName = addCategoryViewModel.CategoryName,
+                    Description = addCategoryViewModel.Description
+                };
+                await _context.Categories.AddAsync(category);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(addCategoryViewModel);
         }
         [Area("Admin")]
         [HttpGet]
@@ -63,15 +68,19 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(UpdateCategoryViewModel model)
         {
-            var category = await _context.Categories.FindAsync(model.CategoryID);
-            if(category != null)
+            if(ModelState.IsValid)
             {
-                category.CategoryName = model.CategoryName;
-                category.Description = model.Description;
-                await _context.SaveChangesAsync();
+                var category = await _context.Categories.FindAsync(model.CategoryID);
+                if(category != null)
+                {
+                    category.CategoryName = model.CategoryName;
+                    category.Description = model.Description;
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return View(model);
         }
         [Area("Admin")]
         [HttpGet]

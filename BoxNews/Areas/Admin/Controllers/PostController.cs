@@ -1,6 +1,8 @@
 using BoxNews.Data;
 using BoxNews.Models.Domain;
 using BoxNews.Models.PostViewModel;
+using Microsoft.Extensions.Logging;
+using BoxNews.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,18 +11,21 @@ namespace BoxNews.Areas.Admin.Controllers
 {
     public class PostController : Controller
     {
-         private readonly BoxNewDbContext _context;
-        public PostController(BoxNewDbContext _context)
+        private readonly BoxNewDbContext _context;
+        private readonly IPostService _postService;
+        public PostController(BoxNewDbContext _context, IPostService postService)
         {
             this._context = _context;
+            _postService = postService;
         }
+    
         [Area("Admin")]
         //list danh sách
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var categories = _context.Categories.ToList();
-            var posts = await _context.Posts.Include(o => o.Category).ToListAsync();
+            var posts = await _context.Posts.Include(o => o.Category).OrderByDescending(o => o.PostID).ToListAsync();
             return View(posts);
         }
         [Area("Admin")]
@@ -134,6 +139,14 @@ namespace BoxNews.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+        [Area("Admin")]
+        [HttpPost]
+        public IActionResult SearchByKeyword(string keyword)
+        {
+            ViewBag.Keyword = keyword;
+            var filteredPosts = _postService.GetPostsByKeyword(keyword);
+            return PartialView("_PostListPartial", filteredPosts);
         }
     }
 }
