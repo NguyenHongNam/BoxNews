@@ -7,9 +7,9 @@ namespace BoxNews.Service{
     public class PostService : IPostService
     {
         private readonly BoxNewDbContext _context;
-        public PostService(BoxNewDbContext _context)
+        public PostService(BoxNewDbContext dataContext)
         {
-            _context = _context;
+            _context = dataContext;
         }
         public List<Post> GetAllPosts()
         {
@@ -21,7 +21,7 @@ namespace BoxNews.Service{
                 .Where(p => p.Title.Contains(keyword))
                 .ToList();
 
-            return filteredPosts;
+               return filteredPosts;
         }
     }
 }
