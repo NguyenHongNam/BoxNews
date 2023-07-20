@@ -20,7 +20,7 @@ namespace BoxNews.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var categories = _context.Categories.ToList();
-            var posts = await _context.Posts.Include(o => o.Category).ToListAsync();
+            var posts = await _context.Posts.Include(o => o.Category).OrderByDescending(o => o.PostID).ToListAsync();
             return View(posts);
         }
         [Area("Admin")]
@@ -40,35 +40,31 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddPostViewModel addPostViewModel, IFormFile image)
         {
-            if(ModelState.IsValid)
+            if (image != null && image.Length > 0)
             {
-                if (image != null && image.Length > 0)
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await image.CopyToAsync(stream);
-                    }
-                    addPostViewModel.ImgSrc = fileName;
+                    await image.CopyToAsync(stream);
                 }
-                var post = new Post()
-                {
-                    Title = addPostViewModel.Title,
-                    CreatedAt = DateTime.Now,
-                    Author = addPostViewModel.Author,
-                    CategoryID = addPostViewModel.CategoryID,
-                    AccountID = addPostViewModel.AccountID,
-                    Content = addPostViewModel.Content,
-                    ImgSrc = addPostViewModel.ImgSrc,
-                    Status = addPostViewModel.Status
-                };
-                addPostViewModel.Categories = _context.Categories.ToList();
-                await _context.Posts.AddAsync(post);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                addPostViewModel.ImgSrc = fileName;
             }
-            return View(addPostViewModel);
+            var post = new Post()
+            {
+                Title = addPostViewModel.Title,
+                CreatedAt = DateTime.Now,
+                Author = addPostViewModel.Author,
+                CategoryID = addPostViewModel.CategoryID,
+                AccountID = addPostViewModel.AccountID,
+                Content = addPostViewModel.Content,
+                ImgSrc = addPostViewModel.ImgSrc,
+                Status = addPostViewModel.Status
+            };
+            addPostViewModel.Categories = _context.Categories.ToList();
+            await _context.Posts.AddAsync(post);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
         [Area("Admin")]
         [HttpGet]
@@ -141,5 +137,24 @@ namespace BoxNews.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
+        [Area("Admin")]
+        [HttpGet]
+        public async Task<IActionResult> Search(string keyword)
+        {
+            var categories = _context.Categories.ToList();
+            var posts = await _context.Posts.Include(o => o.Category).Where(o => o.Title.Contains(keyword)).ToListAsync();
+            return View(posts);
+        }
+        [Area("Admin")]
+        [HttpGet]
+        public IActionResult FilterPosts(int categoryId)
+        {
+            // Xử lý logic lọc bài viết theo categoryId
+            var filteredPosts = _context.GetPostsByCategory(categoryId);
+
+            // Trả về danh sách bài viết sau khi lọc dưới dạng JSON
+            return Json(filteredPosts);
+        }
+
     }
 }

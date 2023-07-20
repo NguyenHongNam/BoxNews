@@ -3,6 +3,7 @@
     ViewData["Title"] = "Post";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 <div class="col-md-12">
     <div class="tile">
         <div class="tile-body">
@@ -17,11 +18,7 @@
                     <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm">
                     <button type="submit">Tìm kiếm</button>
                 </form>
-                <select id="categorySelect">
-                    <option value="1">Hoạt động</option>
-                    <option value="0">Không hoạt động</option>
-                </select>
-                @* <form id="filterForm">
+                <form id="filterForm">
                     <select id="categoryDropdown" name="category" onchange="filterPosts()">
                         <option value="">Tất cả</option>
                         @foreach (var category in Model)
@@ -29,12 +26,17 @@
                             <option value="@category.Category.CategoryID">@category.Category.CategoryName</option>
                         }
                     </select>
-                </form> *@
+                </form>
                 <a href="javascript:void(0);" onclick="reloadPage()">
                     <i class="fa fa-refresh"></i>
                 </a>
+                @* <button id="reload-button"><i class="fa fa-refresh"></i></button> *@
             </div>
-            <table class="table table-hover table-bordered" id="postList">
+            @if (Model.Count == 0)
+            {
+                <p>Không có kết quả tìm kiếm.</p>
+            }else{
+            <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                     <tr>
                         <th>Mã tin tức</th>
@@ -84,40 +86,12 @@
                     }
                 </tbody>
             </table>
+            }
         </div>
     </div>
 </div>
-
 <script>
     function reloadPage() {
       window.location.href = '@Url.Action("Index", "Post")';
     }
 </script>
-@* <script>
-    $(function () {
-        $('#categorySelect').change(function () {
-            var categoryId = $(this).val();
-
-            $.ajax({
-                url: '/Post/FilterPosts',
-                type: 'GET',
-                data: { categoryId: categoryId },
-                success: function (result) {
-                    // Xử lý kết quả trả về, cập nhật danh sách bài viết
-                    var postList = $('#postList');
-                    postList.empty();
-
-                    $.each(result, function (index, post) {
-                        postList.append('<div class="post">' +
-                            '<h3>' + post.Title + '</h3>' +
-                            '<p>' + post.Content + '</p>' +
-                            '</div>');
-                    });
-                }
-            });
-        });
-    });
-</script> *@
-
-
-
