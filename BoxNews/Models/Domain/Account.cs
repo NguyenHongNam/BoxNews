@@ -15,6 +15,7 @@ namespace BoxNews.Models.Domain
         public string Email { get; set; }
         public string FullName { get; set; }
         public string RoleName { get; set; }
+        public Role Roles { get; set; }
 
         [ForeignKey("Role")]
         public int RoleID { get; set; }
