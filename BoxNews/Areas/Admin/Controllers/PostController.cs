@@ -24,9 +24,19 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var categories = _context.Categories.ToList();
-            var posts = await _context.Posts.Include(o => o.Category).OrderByDescending(o => o.PostID).ToListAsync();
-            return View(posts);
+            // var categories = _context.Categories.ToList();
+            // var posts = await _context.Posts.Include(o => o.Category).OrderByDescending(o => o.PostID).ToListAsync();
+            // var posts = await _context.Posts.OrderByDescending(o => o.PostID).ToListAsync();
+            // return View(posts);
+           var categories = _context.Categories.ToList();
+           var posts = _context.Posts.OrderByDescending(o => o.PostID).ToList();
+            var viewModel = new PostsVM
+            {
+                Categories = categories,
+                Posts = posts
+            };
+
+            return View(viewModel);
         }
         [Area("Admin")]
         [HttpGet]
@@ -95,36 +105,40 @@ namespace BoxNews.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
+        // [Area("Admin")]
+        // [HttpPost]
+        // public async Task<IActionResult> Update(UpdatePostViewModel model, IFormFile image)
+        // {
+        //     var categories = _context.Categories.ToList();
+        //     var post = await _context.Posts.FindAsync(model.CategoryID);
+        //     if(post != null)
+        //     {
+        //         post.Title = model.Title;
+        //         post.Author = model.Author;
+        //         post.CategoryID = model.CategoryID;
+        //         post.Content = model.Content;
+        //         post.Status = model.Status;
+        //         if (image != null && image.Length > 0)
+        //         {
+        //             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+        //             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+        //             using (var stream = new FileStream(filePath, FileMode.Create))
+        //             {
+        //                 await image.CopyToAsync(stream);
+        //             }
+        //             post.ImgSrc = "/images/" + fileName;
+        //         }
+                
+        //         await _context.SaveChangesAsync();
+        //         return RedirectToAction("Index");
+        //     }
+        //     return RedirectToAction("Index");
+        // }
         [Area("Admin")]
         [HttpPost]
-        public async Task<IActionResult> Update(UpdatePostViewModel model, IFormFile image)
+        public IActionResult Update(Post post)
         {
-            // var categories = _context.Categories.ToList();
-            var post = await _context.Posts.FindAsync(model.CategoryID);
-            if(post != null)
-            {
-                post.Title = model.Title;
-                post.Author = model.Author;
-                // post.CategoryID = model.CategoryID;
-                post.Content = model.Content;
-                // Kiểm tra xem người dùng đã chọn ảnh mới hay chưa
-                // if (image != null)
-                // {
-                //     // Lưu ảnh vào vị trí trong máy chủ
-                //     var imagePath = "wwwroot/images";
-                //     using (var stream = new FileStream(imagePath, FileMode.Create))
-                //     {
-                //         image.CopyTo(stream);
-                //     }
-                    
-                //     // Cập nhật đường dẫn ảnh mới vào thuộc tính ImagePath của sản phẩm
-                //     model.ImgSrc = imagePath;
-                // }
-                // post.ImgSrc = model.ImgSrc;
-                post.Status = model.Status;
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+           _postService.UpdatePost(post);
             return RedirectToAction("Index");
         }
         [Area("Admin")]
@@ -144,9 +158,22 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult SearchByKeyword(string keyword)
         {
-            ViewBag.Keyword = keyword;
             var filteredPosts = _postService.GetPostsByKeyword(keyword);
             return PartialView("_PostListPartial", filteredPosts);
+        }
+        [Area("Admin")]
+        [HttpGet]
+        public IActionResult FilterByCategory(int categoryId)
+        {
+            var posts = _postService.GetPostsByCategory(categoryId);
+            return PartialView("_PostListPartial", posts);
+        }
+        [Area("Admin")]
+        [HttpGet]
+        public IActionResult FilterByStatus(bool status)
+        {
+            var posts = _postService.GetPostsByStatus(status);
+            return PartialView("_PostListPartial", posts);
         }
     }
 }

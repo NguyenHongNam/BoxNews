@@ -16,6 +16,5 @@ namespace BoxNews.Models.Domain
         public string Content { get; set; }
         public string ImgSrc { get; set; }
         public bool Status { get; set; }
-        public Category Category { get; set; }
     }
 }

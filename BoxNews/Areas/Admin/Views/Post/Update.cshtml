@@ -7,7 +7,7 @@
     <div class="tile">
         <div class="tile-body">
             <div class="row element-button">
-                <h2>Thêm mới tin tức</h2>
+                <h2>Chỉnh sửa tin tức</h2>
             </div>
             <form method="post" asp-area="Admin" asp-controller="Post" asp-action="Update" enctype="multipart/form-data">
                 <div class="mb-3">
@@ -28,7 +28,7 @@
                         <option value="">-- Chọn danh mục --</option>
                         @foreach (var category in Model.Categories)
                         {
-                            <option value="@category.CategoryID">@category.CategoryName</option>
+                            <option value="@category.CategoryID">@category.CategoryID</option>
                         }
                     </select>
                 </div>

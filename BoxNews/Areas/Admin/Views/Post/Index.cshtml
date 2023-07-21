@@ -1,4 +1,4 @@
-@model List<BoxNews.Models.Domain.Post>
+@model BoxNews.Models.PostViewModel.PostsVM;
 @{
     ViewData["Title"] = "Post";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -18,21 +18,24 @@
                     <input type="text" id="keyword" name="keyword" placeholder="Enter keyword">
                     <button type="button" id="searchBtn">Search</button>
                 </form>
-                <form id="filterForm">
-                    <select id="status" name="status">
-                        <option value="">All</option>
-                        <option value="1">Published</option>
-                        <option value="0">Draft</option>
-                    </select>
-                    <button type="button" id="filterBtn">Filter</button>
-                </form>
+                <select id="categoryDropdown">
+                    <option value="">-- Chọn danh mục --</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.CategoryID">@category.CategoryName</option>
+                    }
+                </select>
+                <select id="statusDropdown">
+                    <option value="">-- Chọn trạng thái --</option>
+                    <option value="1">Hoạt động</option>
+                    <option value="0">Không hoạt động</option>
+                </select>
                 <a href="javascript:void(0);" onclick="reloadPage()" style="float: right;">
                     <i class="fa fa-refresh"></i>
                 </a>
-                <p>Giá trị keyword: @ViewBag.Keyword</p>
             </div>
             <div id="postList">
-                @Html.Partial("_PostListPartial", Model)
+                @Html.Partial("_PostListPartial", Model.Posts)
             </div>
         </div>
     </div>
@@ -50,7 +53,6 @@
                 url: "@Url.Action("SearchByKeyword", "Post")",
                 data: { keyword: keyword },
                 success: function (data) {
-                    @* console.log("Success! Data received:", data); *@
                     $("#postList").html(data);
                 },
                 error: function () {
@@ -59,21 +61,40 @@
             });
         });
     });
-
     $(document).ready(function () {
-        $("#filterBtn").click(function () {
-            var status = $("#status").val();
-            $.ajax({
-                type: "GET",
-                url: "@Url.Action("FilterByStatus", "Post")",
-                data: { status: status },
-                success: function (data) {
-                    $("#postList").html(data);
-                },
-                error: function () {
-                    alert("Error while filtering.");
-                }
-            });
+        $("#categoryDropdown").change(function () {
+            var categoryId = $(this).val();
+            if (categoryId !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("FilterByCategory", "Post")",
+                    data: { categoryId: categoryId },
+                    success: function (data) {
+                        $("#postList").html(data);
+                    },
+                    error: function () {
+                        alert("Error while loading posts.");
+                    }
+                });
+            }
+        });
+    });
+    $(document).ready(function () {
+        $("#statusDropdown").change(function () {
+            var status = $(this).val();
+            if (status !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("FilterByStatus", "Post")",
+                    data: { status: status },
+                    success: function (data) {
+                        $("#postList").html(data);
+                    },
+                    error: function () {
+                        alert("Error while loading posts.");
+                    }
+                });
+            }
         });
     });
 </script>
