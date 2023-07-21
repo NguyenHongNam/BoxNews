@@ -1,4 +1,5 @@
 using BoxNews.Models.Domain;
+using BoxNews.Models.PostViewModel;
 
 namespace BoxNews.Service{
     public interface IPostService
@@ -7,7 +8,7 @@ namespace BoxNews.Service{
         List<Post> GetPostsByCategory(int categoryId);
         List<Post> GetPostsByStatus(bool status);
         List<Category> GetAllCategories();
-        void UpdatePost(Post post);
+        void UpdatePost(UpdatePostViewModel post);
     }
 }
         

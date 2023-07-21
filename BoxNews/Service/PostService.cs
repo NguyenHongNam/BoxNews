@@ -1,5 +1,6 @@
 using BoxNews.Data;
 using BoxNews.Models.Domain;
+using BoxNews.Models.PostViewModel;
 using BoxNews.Service;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +34,7 @@ namespace BoxNews.Service{
         {
             return _context.Posts.Where(post => post.Status == status).ToList();
         }
-        public void UpdatePost(Post post)
+        public void UpdatePost(UpdatePostViewModel post)
         {
             var existingPost = _context.Posts.Find(post.PostID);
 

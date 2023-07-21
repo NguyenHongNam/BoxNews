@@ -136,7 +136,7 @@ namespace BoxNews.Areas.Admin.Controllers
         // }
         [Area("Admin")]
         [HttpPost]
-        public IActionResult Update(Post post)
+        public IActionResult Update(UpdatePostViewModel post)
         {
            _postService.UpdatePost(post);
             return RedirectToAction("Index");
