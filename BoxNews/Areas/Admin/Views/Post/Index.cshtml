@@ -1,4 +1,4 @@
-@model List<BoxNews.Models.Domain.Post>
+@model BoxNews.Models.PostViewModel.PostsVM;
 @{
     ViewData["Title"] = "Post";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -7,12 +7,13 @@
     <div class="tile">
         <div class="tile-body">
             <div class="row element-button">
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="float: left;">
                     <a class="btn btn-add btn-sm" asp-area="Admin" asp-controller="Post" asp-action="Add" title="Thêm">
                         <i class="fas fa-plus"></i>
                         Tạo mới tin tức
                     </a>
                 </div>
+<<<<<<< HEAD
                 <form asp-controller="Post" asp-action="Search" method="get">
                     <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm">
                     <button type="submit">Tìm kiếm</button>
@@ -50,43 +51,93 @@
                 </thead>
                 <tbody>
                     @foreach(var post in Model)
+=======
+                <form id="searchForm">
+                    <input type="text" id="keyword" name="keyword" placeholder="Enter keyword">
+                    <button type="button" id="searchBtn">Search</button>
+                </form>
+                <select id="categoryDropdown">
+                    <option value="">-- Chọn danh mục --</option>
+                    @foreach (var category in Model.Categories)
+>>>>>>> 3c9011386238341b07c4e5f043caa4c1e8d76a2a
                     {
-                        <tr>
-                            <td>@post.PostID</td>
-                            <td>@post.Title</td>
-                            <td>
-                                @if (!string.IsNullOrEmpty(@post.ImgSrc))
-                                {
-                                    <img src="~/images/@post.ImgSrc" alt="Post Image" style="width: 60px; height="60px";" />
-                                }
-                            </td>
-                            <td>@post.Author</td>
-                            <td>@post.CreatedAt.ToString("dd-MM-yyyy")</td>
-                            <td>@Html.Raw(@post.Content)</td>
-                            <td>
-                                @if(@post.Status)
-                                {
-                                    <span class="badge bg-success">Hoạt động</span>
-                                }else{
-                                    <span class="badge badge-secondary">Không hoạt động</span>
-                                }
-                            </td> 
-                            <td>@post.Category.CategoryName</td>
-                            <td>
-                                <a class="btn btn-primary btn-sm edit" asp-area="Admin" asp-controller="Post" asp-action="Update" asp-route-id="@post.PostID" title="Sửa">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a class="btn btn-primary btn-sm trash" asp-area="Admin" asp-controller="Post" asp-action="Delete" asp-route-id="@post.PostID" title="Xóa">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
+                        <option value="@category.CategoryID">@category.CategoryName</option>
                     }
-                </tbody>
-            </table>
+                </select>
+                <select id="statusDropdown">
+                    <option value="">-- Chọn trạng thái --</option>
+                    <option value="1">Hoạt động</option>
+                    <option value="0">Không hoạt động</option>
+                </select>
+                <a href="javascript:void(0);" onclick="reloadPage()" style="float: right;">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+            <div id="postList">
+                @Html.Partial("_PostListPartial", Model.Posts)
+            </div>
         </div>
     </div>
 </div>
+<script>
+    function reloadPage() {
+        window.location.href = '@Url.Action("Index", "Post")';
+    }
+
+    $(document).ready(function () {
+        $("#searchBtn").click(function () {
+            var keyword = $("#keyword").val();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SearchByKeyword", "Post")",
+                data: { keyword: keyword },
+                success: function (data) {
+                    $("#postList").html(data);
+                },
+                error: function () {
+                    alert("Error while searching.");
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $("#categoryDropdown").change(function () {
+            var categoryId = $(this).val();
+            if (categoryId !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("FilterByCategory", "Post")",
+                    data: { categoryId: categoryId },
+                    success: function (data) {
+                        $("#postList").html(data);
+                    },
+                    error: function () {
+                        alert("Error while loading posts.");
+                    }
+                });
+            }
+        });
+    });
+    $(document).ready(function () {
+        $("#statusDropdown").change(function () {
+            var status = $(this).val();
+            if (status !== "") {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("FilterByStatus", "Post")",
+                    data: { status: status },
+                    success: function (data) {
+                        $("#postList").html(data);
+                    },
+                    error: function () {
+                        alert("Error while loading posts.");
+                    }
+                });
+            }
+        });
+    });
+</script>
+
 
 <script>
     function reloadPage() {

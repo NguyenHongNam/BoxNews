@@ -1,5 +1,36 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<BoxNews.Models.Domain.Account>
 @{
+    ViewData["Title"] = "Account";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+<div class="col-md-12">
+    <div class="tile">
+        <div class="tile-body">
+            <div class="row element-button">
+                <h2>Quản lý tài khoản</h2>
+            </div>
+            <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                    <tr>
+                        <th>Họ và tên</th>
+                        <th>Tên tài khoản</th>
+                        <th>Email</th>
+                        <th>Quyền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var acc in Model)
+                    {
+                        <tr>
+                            <td>@acc.FullName</td>
+                            <td>@acc.UserName</td>
+                            <td>@acc.Email</td>
+                            <td>@acc.Roles.RoleName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

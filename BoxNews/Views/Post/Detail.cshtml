@@ -1,0 +1,124 @@
+﻿@model BoxNews.Models.Domain.Post
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Your Page Title</title>
+    <!-- Thêm dòng sau để tải thư viện jQuery từ CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Xử lý khi người dùng gửi comment
+            $("#commentForm").submit(function (e) {
+                e.preventDefault();
+                var postId = $("#postId").val();
+                var comment = $("#comment").val();
+                if (comment) {
+                    $.ajax({
+                        url: "/Rating/AddComment",
+                        type: "POST",
+                        data: { postId: postId, comments: comment },
+                        success: function () {
+                            // Refresh trang để hiển thị bình luận mới
+                            location.reload();
+                        },
+                        error: function () {
+                            alert("An error occurred while adding the comment.");
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<section id="contentSection">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-8 col-sm-8">
+                <div class="post-detail">
+                    <h2 class="post-title">@Model.Title</h2>
+
+                    <img src="~/images/@Model.ImgSrc" alt="@Model.Title" class="img-fluid">
+
+                    <p class="post-content">@Html.Raw(@Model.Content)</p>
+                </div>
+                <div class="comment-section">
+                    <h3>Comment</h3>
+                        <div class="comment-form">
+                            <h4>Add a Comment</h4>
+                            <form id="commentForm" method="post">
+                                <!-- Ô nhập bình luận rộng hơn với cols=50 -->
+                                <textarea id="comment" name="comment" rows="4" cols="80" placeholder="Enter your comment..."></textarea>
+                                <br>
+                                <input type="submit" value="Submit">
+                            </form>
+                        </div>
+                        </div>
+                <div class="comment-list">
+                        <h4>Comments:</h4>
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="comment">
+                                <p><span>@comment.UserName</span>: @comment.Comments</p>
+                            </div>
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
+<style>
+    .post-detail {
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .post-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .post-content {
+        line-height: 2;
+        font-size: 18px;
+    }
+
+    .img-fluid {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .comment-section {
+        margin-top: 30px;
+    }
+
+    .comment-form {
+        margin-bottom: 20px;
+    }
+
+    .comment-list {
+        margin-top: 20px;
+    }
+
+    .comment {
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+    }
+
+        .comment p {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .comment span {
+            font-weight: bold;
+        }
+</style>
+

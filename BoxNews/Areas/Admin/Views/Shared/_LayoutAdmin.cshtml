@@ -17,6 +17,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<<<<<<< HEAD
+=======
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+>>>>>>> 3c9011386238341b07c4e5f043caa4c1e8d76a2a
     <script src="https://cdn.ckeditor.com/ckeditor5/24.0.0/classic/ckeditor.js"></script>
 </head>
 
@@ -29,7 +34,10 @@
         <ul class="app-nav">
             <!-- User Menu-->
             <li>
-                <a class="app-nav__item" href="account/login"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+                <a class="app-nav__item" href="/account/login"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+            </li>
+            <li>
+                <a class="app-nav__item" href="/home/index"><i class='bx bx-home'></i> </a>
             </li>
         </ul>
     </header>
@@ -45,13 +53,18 @@
         <hr>
         <ul class="app-menu">
             <li>
-                <a class="app-menu__item " href="table-data-table.html">
-                    <i class='app-menu__icon bx bx-id-card'></i> <span class="app-menu__label">Quản lý tài khoản</span>
+                <a class="app-menu__item " href="/Admin/Account/Index">
+                    <i class='app-menu__icon bx bx-id-card'></i> <span class="app-menu__label">Quản lý tài khoản </span>
                 </a>
             </li>
             <li>
-                <a class="app-menu__item" asp-area="Admin" asp-controller="Category" asp-action="Index">
-                    <i class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý danh mục</span>
+                <a class="app-menu__item " href="/Admin/Category/Index">
+                    <i class='app-menu__icon bx bx-id-card'></i> <span class="app-menu__label">Quản lý danh mục</span>
+                </a>
+            </li>
+            <li>
+                <a class="app-menu__item" href="/Admin/Post/Index">
+                    <i class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý bài đăng</span>
                 </a>
             </li>
         </ul>
@@ -61,7 +74,7 @@
             <div class="col-md-12">
                 <div class="app-title">
                     <ul class="app-breadcrumb breadcrumb">
-                        <li class="breadcrumb-item"><a href="#"><b>Trang quản lý</b></a></li>
+                        <li class="breadcrumb-item"><a href="#"><b>Chào mừng bạn đến với trang quản lý</b></a></li>
                     </ul>
                 </div>
             </div>

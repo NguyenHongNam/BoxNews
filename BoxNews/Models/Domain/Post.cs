@@ -12,10 +12,12 @@ namespace BoxNews.Models.Domain
         public DateTime CreatedAt { get; set; }
         public string Author { get; set; }
         public int CategoryID { get; set; }
+        public string CategoryName { get; set; }
         public int AccountID { get; set; }
         public string Content { get; set; }
         public string ImgSrc { get; set; }
         public bool Status { get; set; }
+        public List<Rating> Comments { get; set; }
         public Category Category { get; set; }
     }
 }
