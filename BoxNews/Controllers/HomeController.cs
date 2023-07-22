@@ -24,7 +24,6 @@ namespace BoxNews.Controllers
             var posts = await  _context.Posts.Include(o => o.Category).ToListAsync();
             return View(posts);
         }
-
         public IActionResult Privacy()
         {
             return View();

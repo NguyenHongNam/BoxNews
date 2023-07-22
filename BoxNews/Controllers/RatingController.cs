@@ -7,27 +7,27 @@ namespace BoxNews.Controllers
 {
     public class RatingController : Controller
     {
-        private readonly BoxNewDbContext _dbContext;
-        public RatingController(BoxNewDbContext dbContext)
+        private readonly BoxNewDbContext _context;
+        public RatingController(BoxNewDbContext context)
         {
-            _dbContext = dbContext;
+            _context = context;
         }
         [HttpPost]
 
         public IActionResult AddComment(int postId, string userName, string comments)
         {
-            var account = _dbContext.Accounts.FirstOrDefault(a => a.UserName == userName);
+            var account = _context.Accounts.FirstOrDefault(a => a.UserName == userName);
             if (account != null)
             {
                 var rating = new Rating
                 { 
-                    PostID = $"{postId}",
+                    PostID = postId,
                     UserName = account.FullName,
                     Comments = comments,
                     CreateAt = DateTime.Now
                 };
-                _dbContext.Ratings.Add(rating);
-                _dbContext.SaveChanges();
+                _context.Ratings.Add(rating);
+                _context.SaveChanges();
                 return RedirectToAction("Detail", new { id = postId });
             }
             else

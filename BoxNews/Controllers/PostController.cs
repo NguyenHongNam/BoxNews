@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BoxNews.Models.Domain;
 using BoxNews.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoxNews.Controllers
 {
@@ -13,12 +14,15 @@ namespace BoxNews.Controllers
         }
         public IActionResult Detail(int id)
         {
-            var post = _context.Posts.Find(id);
-            if(post == null)
+            var post = _context.Posts.Include(p => p.Category).Include(p => p.Comments).FirstOrDefault(p => p.PostID == id);
+            if (post != null)
+            {
+                return View(post);
+            }
+            else
             {
                 return NotFound();
             }
-            return View(post);
         }
     }
 }
