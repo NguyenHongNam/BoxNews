@@ -145,16 +145,16 @@ namespace BoxNews.Areas.Admin.Controllers
             var posts = await _context.Posts.Include(o => o.Category).Where(o => o.Title.Contains(keyword)).ToListAsync();
             return View(posts);
         }
-        [Area("Admin")]
-        [HttpGet]
-        public IActionResult FilterPosts(int categoryId)
-        {
-            // Xử lý logic lọc bài viết theo categoryId
-            var filteredPosts = _context.GetPostsByCategory(categoryId);
+        // [Area("Admin")]
+        // [HttpGet]
+        // public IActionResult FilterPosts(int categoryId)
+        // {
+        //     // Xử lý logic lọc bài viết theo categoryId
+        //     var filteredPosts = _context.GetPostsByCategory(categoryId);
 
-            // Trả về danh sách bài viết sau khi lọc dưới dạng JSON
-            return Json(filteredPosts);
-        }
+        //     // Trả về danh sách bài viết sau khi lọc dưới dạng JSON
+        //     return Json(filteredPosts);
+        // }
 
     }
 }
