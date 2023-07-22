@@ -14,6 +14,8 @@ namespace BoxNews.Controllers
         }
         public IActionResult Detail(int id)
         {
+            // var post = _context.Posts.Include(p => p.Category).FirstOrDefault(p => p.PostID == id);
+            // return View(post);
             var post = _context.Posts.Include(p => p.Category).Include(p => p.Comments).FirstOrDefault(p => p.PostID == id);
             if (post != null)
             {

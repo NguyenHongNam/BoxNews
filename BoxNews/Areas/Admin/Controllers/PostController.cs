@@ -54,6 +54,7 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(AddPostViewModel addPostViewModel, IFormFile image)
         {
+            addPostViewModel.Categories = _context.Categories.ToList();
             if (image != null && image.Length > 0)
             {
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
@@ -64,18 +65,19 @@ namespace BoxNews.Areas.Admin.Controllers
                 }
                 addPostViewModel.ImgSrc = fileName;
             }
+            var categoryName = addPostViewModel.Categories.Find(x => x.CategoryID == addPostViewModel.CategoryID).CategoryName.ToString();
             var post = new Post()
             {
                 Title = addPostViewModel.Title,
                 CreatedAt = DateTime.Now,
                 Author = addPostViewModel.Author,
                 CategoryID = addPostViewModel.CategoryID,
+                CategoryName = categoryName,
                 AccountID = addPostViewModel.AccountID,
                 Content = addPostViewModel.Content,
                 ImgSrc = addPostViewModel.ImgSrc,
                 Status = addPostViewModel.Status
             };
-            addPostViewModel.Categories = _context.Categories.ToList();
             await _context.Posts.AddAsync(post);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
