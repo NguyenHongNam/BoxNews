@@ -2,7 +2,7 @@ using BoxNews.Data;
 using BoxNews.Models.Domain;
 using BoxNews.Models.PostViewModel;
 using Microsoft.Extensions.Logging;
-using BoxNews.Service;
+//using BoxNews.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +12,11 @@ namespace BoxNews.Areas.Admin.Controllers
     public class PostController : Controller
     {
         private readonly BoxNewDbContext _context;
-        private readonly IPostService _postService;
-        public PostController(BoxNewDbContext _context, IPostService postService)
+        //private readonly IPostService _postService;
+        public PostController(BoxNewDbContext _context/*, IPostService postService*/)
         {
             this._context = _context;
-            _postService = postService;
+            //_postService = postService;
         }
     
         [Area("Admin")]
@@ -137,7 +137,7 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Update(UpdatePostViewModel post)
         {
-           _postService.UpdatePost(post);
+           //_postService.UpdatePost(post);
             return RedirectToAction("Index");
         }
         [Area("Admin")]
@@ -153,26 +153,26 @@ namespace BoxNews.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
-        [Area("Admin")]
-        [HttpPost]
-        public IActionResult SearchByKeyword(string keyword)
-        {
-            var filteredPosts = _postService.GetPostsByKeyword(keyword);
-            return PartialView("_PostListPartial", filteredPosts);
-        }
-        [Area("Admin")]
-        [HttpGet]
-        public IActionResult FilterByCategory(int categoryId)
-        {
-            var posts = _postService.GetPostsByCategory(categoryId);
-            return PartialView("_PostListPartial", posts);
-        }
-        [Area("Admin")]
-        [HttpGet]
-        public IActionResult FilterByStatus(bool status)
-        {
-            var posts = _postService.GetPostsByStatus(status);
-            return PartialView("_PostListPartial", posts);
-        }
+        //[Area("Admin")]
+        //[HttpPost]
+        //public IActionResult SearchByKeyword(string keyword)
+        //{
+        //    //var filteredPosts = _postService.GetPostsByKeyword(keyword);
+        //    //return PartialView("_PostListPartial", filteredPosts);
+        //}
+        //[Area("Admin")]
+        //[HttpGet]
+        //public IActionResult FilterByCategory(int categoryId)
+        //{
+        //    //var posts = _postService.GetPostsByCategory(categoryId);
+        //    //return PartialView("_PostListPartial", posts);
+        //}
+        //[Area("Admin")]
+        //[HttpGet]
+        //public IActionResult FilterByStatus(bool status)
+        //{
+        //    //var posts = _postService.GetPostsByStatus(status);
+        //    //return PartialView("_PostListPartial", posts);
+        //}
     }
 }

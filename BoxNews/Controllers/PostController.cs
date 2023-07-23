@@ -12,6 +12,16 @@ namespace BoxNews.Controllers
         {
             _context = context;
         }
+        public IActionResult DomesticNews()
+        {
+            var DomesticNews = _context.Posts.Where(p => p.Category.CategoryName == "Tin trong nước").ToList();
+            return View(DomesticNews);
+        }
+        public IActionResult InternationalNews()
+        {
+            var InternationalNews = _context.Posts.Where(p => p.Category.CategoryName == "Tin quốc tế").ToList();
+            return View(InternationalNews);
+        }
         public IActionResult Detail(int id)
         {
             // var post = _context.Posts.Include(p => p.Category).FirstOrDefault(p => p.PostID == id);

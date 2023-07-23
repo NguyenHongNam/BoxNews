@@ -8,13 +8,6 @@ public class BoxNewDbContext : DbContext
     {
 
     }
-    private readonly BoxNewDbContext _context;
-
-    public BoxNewDbContext(BoxNewDbContext _context)
-    {
-        _context = _context;
-    }
-
     public DbSet<Category> Categories {get; set;}
     public DbSet<Post> Posts {get; set;}
     public DbSet<Account> Accounts { get; set;}
