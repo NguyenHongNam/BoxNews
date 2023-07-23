@@ -13,45 +13,6 @@
                         Tạo mới tin tức
                     </a>
                 </div>
-<<<<<<< HEAD
-                <form asp-controller="Post" asp-action="Search" method="get">
-                    <input type="text" name="keyword" placeholder="Nhập từ khóa tìm kiếm">
-                    <button type="submit">Tìm kiếm</button>
-                </form>
-                @* <select id="categorySelect">
-                    <option value="1">Hoạt động</option>
-                    <option value="0">Không hoạt động</option>
-                </select> *@
-                @* <form id="filterForm">
-                    <select id="categoryDropdown" name="category" onchange="filterPosts()">
-                        <option value="">Tất cả</option>
-                        @foreach (var category in Model)
-                        {
-                            <option value="@category.Category.CategoryID">@category.Category.CategoryName</option>
-                        }
-                    </select>
-                </form> *@
-                <a href="javascript:void(0);" onclick="reloadPage()">
-                    <i class="fa fa-refresh"></i>
-                </a>
-            </div>
-            <table class="table table-hover table-bordered" id="postList">
-                <thead>
-                    <tr>
-                        <th>Mã tin tức</th>
-                        <th>Tên tin tức</th>
-                        <th>Ảnh</th>
-                        <th>Tác giả</th>
-                        <th>Ngày tạo</th>
-                        <th>Nội dung</th>
-                        <th>Tình trạng</th>
-                        <th>Danh mục</th>
-                        <th>Chức năng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var post in Model)
-=======
                 <form id="searchForm">
                     <input type="text" id="keyword" name="keyword" placeholder="Enter keyword">
                     <button type="button" id="searchBtn">Search</button>
@@ -59,7 +20,6 @@
                 <select id="categoryDropdown">
                     <option value="">-- Chọn danh mục --</option>
                     @foreach (var category in Model.Categories)
->>>>>>> 3c9011386238341b07c4e5f043caa4c1e8d76a2a
                     {
                         <option value="@category.CategoryID">@category.CategoryName</option>
                     }
