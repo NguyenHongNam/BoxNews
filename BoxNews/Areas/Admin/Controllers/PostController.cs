@@ -24,10 +24,6 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // var categories = _context.Categories.ToList();
-            // var posts = await _context.Posts.Include(o => o.Category).OrderByDescending(o => o.PostID).ToListAsync();
-            // var posts = await _context.Posts.OrderByDescending(o => o.PostID).ToListAsync();
-            // return View(posts);
            var categories = _context.Categories.ToList();
            var posts = _context.Posts.OrderByDescending(o => o.PostID).ToList();
             var viewModel = new PostsVM
@@ -42,13 +38,14 @@ namespace BoxNews.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+           
             var categories = _context.Categories.ToList();
             var viewModel = new AddPostViewModel
             {
                 Categories = categories
             };
-
             return View(viewModel);
+            
         }
         [Area("Admin")]
         [HttpPost]
