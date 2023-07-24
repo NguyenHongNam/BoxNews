@@ -2,7 +2,7 @@ using BoxNews.Data;
 using BoxNews.Models.Domain;
 using BoxNews.Models.PostViewModel;
 using Microsoft.Extensions.Logging;
-//using BoxNews.Service;
+using BoxNews.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +12,11 @@ namespace BoxNews.Areas.Admin.Controllers
     public class PostController : Controller
     {
         private readonly BoxNewDbContext _context;
-        //private readonly IPostService _postService;
-        public PostController(BoxNewDbContext _context/*, IPostService postService*/)
+        private readonly IPostService _postService;
+        public PostController(BoxNewDbContext _context, IPostService postService)
         {
             this._context = _context;
-            //_postService = postService;
+            _postService = postService;
         }
     
         [Area("Admin")]
@@ -104,40 +104,12 @@ namespace BoxNews.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
-        // [Area("Admin")]
-        // [HttpPost]
-        // public async Task<IActionResult> Update(UpdatePostViewModel model, IFormFile image)
-        // {
-        //     var categories = _context.Categories.ToList();
-        //     var post = await _context.Posts.FindAsync(model.CategoryID);
-        //     if(post != null)
-        //     {
-        //         post.Title = model.Title;
-        //         post.Author = model.Author;
-        //         post.CategoryID = model.CategoryID;
-        //         post.Content = model.Content;
-        //         post.Status = model.Status;
-        //         if (image != null && image.Length > 0)
-        //         {
-        //             var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-        //             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-        //             using (var stream = new FileStream(filePath, FileMode.Create))
-        //             {
-        //                 await image.CopyToAsync(stream);
-        //             }
-        //             post.ImgSrc = "/images/" + fileName;
-        //         }
-                
-        //         await _context.SaveChangesAsync();
-        //         return RedirectToAction("Index");
-        //     }
-        //     return RedirectToAction("Index");
-        // }
+
         [Area("Admin")]
         [HttpPost]
         public IActionResult Update(UpdatePostViewModel post)
         {
-           //_postService.UpdatePost(post);
+           _postService.UpdatePost(post);
             return RedirectToAction("Index");
         }
         [Area("Admin")]
@@ -153,26 +125,26 @@ namespace BoxNews.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
-        //[Area("Admin")]
-        //[HttpPost]
-        //public IActionResult SearchByKeyword(string keyword)
-        //{
-        //    //var filteredPosts = _postService.GetPostsByKeyword(keyword);
-        //    //return PartialView("_PostListPartial", filteredPosts);
-        //}
-        //[Area("Admin")]
-        //[HttpGet]
-        //public IActionResult FilterByCategory(int categoryId)
-        //{
-        //    //var posts = _postService.GetPostsByCategory(categoryId);
-        //    //return PartialView("_PostListPartial", posts);
-        //}
-        //[Area("Admin")]
-        //[HttpGet]
-        //public IActionResult FilterByStatus(bool status)
-        //{
-        //    //var posts = _postService.GetPostsByStatus(status);
-        //    //return PartialView("_PostListPartial", posts);
-        //}
+        [Area("Admin")]
+        [HttpPost]
+        public IActionResult SearchByKeyword(string keyword)
+        {
+           var filteredPosts = _postService.GetPostsByKeyword(keyword);
+           return PartialView("_PostListPartial", filteredPosts);
+        }
+        [Area("Admin")]
+        [HttpGet]
+        public IActionResult FilterByCategory(int categoryId)
+        {
+           var posts = _postService.GetPostsByCategory(categoryId);
+           return PartialView("_PostListPartial", posts);
+        }
+        [Area("Admin")]
+        [HttpGet]
+        public IActionResult FilterByStatus(bool status)
+        {
+           var posts = _postService.GetPostsByStatus(status);
+           return PartialView("_PostListPartial", posts);
+        }
     }
 }

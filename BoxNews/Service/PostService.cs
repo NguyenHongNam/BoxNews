@@ -55,7 +55,7 @@ namespace BoxNews.Service
                 //    }
                 //    post.ImgSrc = "wwwroot/images/" + fileName;
                 //}
-                existingPost.ImgSrc = post.ImgSrc;
+                // existingPost.ImgSrc = post.ImgSrc;
                 existingPost.Status = post.Status;
                 existingPost.CategoryID = post.CategoryID;
                 existingPost.CategoryName = categoryName;
