@@ -25,7 +25,8 @@ namespace BoxNews.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
            var categories = _context.Categories.ToList();
-           var posts = _context.Posts.OrderByDescending(o => o.PostID).ToList();
+        //    var posts = _context.Posts.OrderByDescending(o => o.PostID).ToList();
+           var posts = _context.Posts.ToList();
             var viewModel = new PostsVM
             {
                 Categories = categories,
@@ -70,7 +71,7 @@ namespace BoxNews.Areas.Admin.Controllers
                 Author = addPostViewModel.Author,
                 CategoryID = addPostViewModel.CategoryID,
                 CategoryName = categoryName,
-                AccountID = addPostViewModel.AccountID,
+                AccountID = 1,
                 Content = addPostViewModel.Content,
                 ImgSrc = addPostViewModel.ImgSrc,
                 Status = addPostViewModel.Status
@@ -125,26 +126,26 @@ namespace BoxNews.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
-        [Area("Admin")]
-        [HttpPost]
-        public IActionResult SearchByKeyword(string keyword)
-        {
-           var filteredPosts = _postService.GetPostsByKeyword(keyword);
-           return PartialView("_PostListPartial", filteredPosts);
-        }
-        [Area("Admin")]
-        [HttpGet]
-        public IActionResult FilterByCategory(int categoryId)
-        {
-           var posts = _postService.GetPostsByCategory(categoryId);
-           return PartialView("_PostListPartial", posts);
-        }
-        [Area("Admin")]
-        [HttpGet]
-        public IActionResult FilterByStatus(bool status)
-        {
-           var posts = _postService.GetPostsByStatus(status);
-           return PartialView("_PostListPartial", posts);
-        }
+        // [Area("Admin")]
+        // [HttpPost]
+        // public IActionResult SearchByKeyword(string keyword)
+        // {
+        //    var filteredPosts = _postService.GetPostsByKeyword(keyword);
+        //    return PartialView("_PostListPartial", filteredPosts);
+        // }
+        // [Area("Admin")]
+        // [HttpGet]
+        // public IActionResult FilterByCategory(int categoryId)
+        // {
+        //    var posts = _postService.GetPostsByCategory(categoryId);
+        //    return PartialView("_PostListPartial", posts);
+        // }
+        // [Area("Admin")]
+        // [HttpGet]
+        // public IActionResult FilterByStatus(bool status)
+        // {
+        //    var posts = _postService.GetPostsByStatus(status);
+        //    return PartialView("_PostListPartial", posts);
+        // }
     }
 }
