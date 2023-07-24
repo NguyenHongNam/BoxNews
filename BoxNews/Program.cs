@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +14,10 @@ builder.Services.AddDbContext<BoxNewDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BoxNewsConnectionString")));
 
 builder.Services.AddScoped<IPostService, PostService>();
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
         options.SlidingExpiration = true;
         options.AccessDeniedPath = "/Forbidden/";
     });

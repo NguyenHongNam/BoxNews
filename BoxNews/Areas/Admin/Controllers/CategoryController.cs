@@ -31,7 +31,7 @@ namespace BoxNews.Areas.Admin.Controllers
         [Area("Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(AddCategoryViewModel addCategoryViewModel)
+        public async Task<IActionResult> Add(AddAccountViewModel addCategoryViewModel)
         {
             if(ModelState.IsValid)
             {
@@ -53,7 +53,7 @@ namespace BoxNews.Areas.Admin.Controllers
             var category = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryID == id);
             if(category != null)
             {
-                var viewModel = new UpdateCategoryViewModel()
+                var viewModel = new UpdateAccountViewModel()
                 {
                     CategoryID = category.CategoryID,
                     CategoryName = category.CategoryName,
@@ -66,7 +66,7 @@ namespace BoxNews.Areas.Admin.Controllers
         //update
         [Area("Admin")]
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateCategoryViewModel model)
+        public async Task<IActionResult> Update(UpdateAccountViewModel model)
         {
             if(ModelState.IsValid)
             {

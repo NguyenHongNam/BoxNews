@@ -2,12 +2,15 @@
 using BoxNews.Models.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace BoxNews.Controllers
 {
     public class RatingController : Controller
     {
         private readonly BoxNewDbContext _context;
+        private readonly ILogger<PostController> _logger;
+
         public RatingController(BoxNewDbContext context)
         {
             _context = context;
@@ -16,28 +19,30 @@ namespace BoxNews.Controllers
 
         public IActionResult AddComment(int postId, string comments)
         {
-            var listPost = _context.Posts.ToList();
-            var accountId = listPost.Find(x => x.PostID == postId).AccountID;
-            var account = _context.Accounts.FirstOrDefault(a => a.AccountID == accountId);
-            if (account != null)
+            if (User.Identity.IsAuthenticated)
             {
-                var rating = new Rating
-                { 
+
+                var currentUser = _context.Accounts.FirstOrDefault(u => u.UserName == User.Identity.Name);
+
+
+                var comment = new Rating
+                {
                     PostID = postId,
-                    UserName = account.FullName,
-                    AccountID = accountId,
+                    AccountID = currentUser.AccountID,
+                    UserName = currentUser.UserName,
                     Comments = comments,
                     CreateAt = DateTime.Now
                 };
-                _context.Ratings.Add(rating);
+
+
+                _context.Ratings.Add(comment);
                 _context.SaveChanges();
-                return RedirectToAction("Detail", new { id = postId });
+
+                return Ok();
             }
-            else
-            {
-                // Xử lý khi không tìm thấy tài khoản
-                return NotFound();
-            }
+
+            return BadRequest();
         }
     }
 }
+

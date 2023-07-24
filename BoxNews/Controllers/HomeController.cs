@@ -21,6 +21,8 @@ namespace BoxNews.Controllers
         public async Task<IActionResult> Index()
         {
             var categories = _context.Categories.ToList();
+            var popularPosts = _context.Posts.OrderByDescending(p => p.Comments.Count).Take(5).ToList();
+            ViewBag.PopularPosts = popularPosts;
             var posts = await  _context.Posts.Include(o => o.Category).ToListAsync();
             return View(posts);
         }
