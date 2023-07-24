@@ -13,7 +13,7 @@
                         Tạo mới tin tức
                     </a>
                 </div>
-                <form id="searchForm">
+                @* <form id="searchForm">
                     <input type="text" id="keyword" name="keyword" placeholder="Enter keyword">
                     <button type="button" id="searchBtn">Search</button>
                 </form>
@@ -31,7 +31,7 @@
                 </select>
                 <a href="javascript:void(0);" onclick="reloadPage()" style="float: right;">
                     <i class="fa fa-refresh"></i>
-                </a>
+                </a> *@
             </div>
             <div id="postList">
                 @Html.Partial("_PostListPartial", Model.Posts)
@@ -98,37 +98,6 @@
     });
 </script>
 
-
-<script>
-    function reloadPage() {
-      window.location.href = '@Url.Action("Index", "Post")';
-    }
-</script>
-@* <script>
-    $(function () {
-        $('#categorySelect').change(function () {
-            var categoryId = $(this).val();
-
-            $.ajax({
-                url: '/Post/FilterPosts',
-                type: 'GET',
-                data: { categoryId: categoryId },
-                success: function (result) {
-                    // Xử lý kết quả trả về, cập nhật danh sách bài viết
-                    var postList = $('#postList');
-                    postList.empty();
-
-                    $.each(result, function (index, post) {
-                        postList.append('<div class="post">' +
-                            '<h3>' + post.Title + '</h3>' +
-                            '<p>' + post.Content + '</p>' +
-                            '</div>');
-                    });
-                }
-            });
-        });
-    });
-</script> *@
 
 
 
