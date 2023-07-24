@@ -14,15 +14,18 @@ namespace BoxNews.Controllers
         }
         [HttpPost]
 
-        public IActionResult AddComment(int postId, string userName, string comments)
+        public IActionResult AddComment(int postId, string comments)
         {
-            var account = _context.Accounts.FirstOrDefault(a => a.UserName == userName);
+            var listPost = _context.Posts.ToList();
+            var accountId = listPost.Find(x => x.PostID == postId).AccountID;
+            var account = _context.Accounts.FirstOrDefault(a => a.AccountID == accountId);
             if (account != null)
             {
                 var rating = new Rating
                 { 
                     PostID = postId,
                     UserName = account.FullName,
+                    AccountID = accountId,
                     Comments = comments,
                     CreateAt = DateTime.Now
                 };

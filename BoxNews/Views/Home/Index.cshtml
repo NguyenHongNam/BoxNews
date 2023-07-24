@@ -10,8 +10,8 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav main_nav">
                 <li class="active"><a href="index.html"><span class="fa fa-home desktop-home"></span><span class="mobile-show">Home</span></a></li>
-                <li><a href="#">Domestic news</a></li>
-                <li><a href="#">International news</a></li>
+                <li><a href="/Post/DomesticNews">Domestic news</a></li>
+                <li><a href="/Post/InternationalNews">International news</a></li>
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li><a href="@Url.Action("Login", "Account")">Logout</a></li>
@@ -69,7 +69,7 @@
                         <li>
                             @foreach (var post in Model.OrderByDescending(p => p.CreatedAt).Take(5)){
                             <div class="media">
-                                <a href="#" class="media-left"> <img src="~/images/@post.ImgSrc" alt="Post Image"></a>
+                                    <a href="~/Post/Detail?id=@post.PostID" class="media-left"> <img src="~/images/@post.ImgSrc" alt="Post Image"></a>
                                 <div class="media-body"> <a href="#" class="catg_title">@post.Title</a></div>
                             </div>
                             }
@@ -101,7 +101,7 @@
                     <div class="single_post_content_right">
                         <ul class="spost_nav">
                             <li>
-                                @foreach (var post in Model.Where(p => p.Category.CategoryName =="Tablet-Laptop-Máy tính ").Take(5))
+                                @foreach (var post in Model.Where(p => p.Category.CategoryName =="Tin công nghệ").Take(5))
                                 {
                                 <div class="media wow fadeInDown">
                                     <a href="~/Post/Detail?id=@post.PostID"class="media-left"> <img src="~/images/@post.ImgSrc" alt="Post Image"></a>

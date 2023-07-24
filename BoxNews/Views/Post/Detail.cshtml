@@ -6,12 +6,16 @@
     <!-- Thêm dòng sau để tải thư viện jQuery từ CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        var queryString = window.location.search;
+        var urlParams = new URLSearchParams(queryString);
+        var postId = urlParams.get('id')
         $(document).ready(function () {
             // Xử lý khi người dùng gửi comment
             $("#commentForm").submit(function (e) {
                 e.preventDefault();
-                var postId = $("#postId").val();
+                //var postId = $("#postId").val();
                 var comment = $("#comment").val();
+                console.log(comment);
                 if (comment) {
                     $.ajax({
                         url: "/Rating/AddComment",
@@ -22,7 +26,8 @@
                             location.reload();
                         },
                         error: function () {
-                            alert("An error occurred while adding the comment.");
+                            location.reload();
+                            //alert("An error occurred while adding the comment.");
                         }
                     });
                 }
@@ -47,7 +52,6 @@
                         <div class="comment-form">
                             <h4>Add a Comment</h4>
                             <form id="commentForm" method="post">
-                                <!-- Ô nhập bình luận rộng hơn với cols=50 -->
                                 <textarea id="comment" name="comment" rows="4" cols="80" placeholder="Enter your comment..."></textarea>
                                 <br>
                                 <input type="submit" value="Submit">

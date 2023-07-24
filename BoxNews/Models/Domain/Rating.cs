@@ -8,6 +8,8 @@ namespace BoxNews.Models.Domain
         public int RatingId { get; set; }
         public int PostID { get; set; }
         public string UserName { get; set;}
+
+        public int AccountID { get; set; }
         public string Comments { get; set;}
         public DateTime CreateAt { get; set; }
     }

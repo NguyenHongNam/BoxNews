@@ -1,7 +1,8 @@
 using BoxNews.Models.Domain;
 using BoxNews.Models.PostViewModel;
 
-namespace BoxNews.Service{
+namespace BoxNews.Service
+{
     public interface IPostService
     {
         List<Post> GetPostsByKeyword(string keyword);
@@ -11,4 +12,3 @@ namespace BoxNews.Service{
         void UpdatePost(UpdatePostViewModel post);
     }
 }
-        

@@ -4,7 +4,8 @@ using BoxNews.Models.PostViewModel;
 using BoxNews.Service;
 using Microsoft.EntityFrameworkCore;
 
-namespace BoxNews.Service{
+namespace BoxNews.Service
+{
     public class PostService : IPostService
     {
         private readonly BoxNewDbContext _context;
@@ -23,7 +24,7 @@ namespace BoxNews.Service{
                 .Where(p => p.Title.Contains(keyword))
                 .ToList();
 
-               return filteredPosts;
+            return filteredPosts;
         }
         public List<Post> GetPostsByCategory(int categoryId)
         {
@@ -44,17 +45,17 @@ namespace BoxNews.Service{
                 existingPost.Title = post.Title;
                 existingPost.Author = post.Author;
                 existingPost.Content = post.Content;
-                // if (image != null && image.Length > 0)
-                // {
-                //     var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                //     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-                //     using (var stream = new FileStream(filePath, FileMode.Create))
-                //     {
-                //         image.CopyTo(stream);
-                //     }
-                //     post.ImgSrc = "wwwroot/images/" + fileName;
-                // }
-                // existingPost.ImgSrc = post.ImgSrc;
+                //if (image != null && image.Length > 0)
+                //{
+                //    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                //    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+                //    using (var stream = new FileStream(filePath, FileMode.Create))
+                //    {
+                //        image.CopyTo(stream);
+                //    }
+                //    post.ImgSrc = "wwwroot/images/" + fileName;
+                //}
+                existingPost.ImgSrc = post.ImgSrc;
                 existingPost.Status = post.Status;
                 existingPost.CategoryID = post.CategoryID;
                 existingPost.CategoryName = categoryName;
@@ -63,4 +64,3 @@ namespace BoxNews.Service{
         }
     }
 }
-        
